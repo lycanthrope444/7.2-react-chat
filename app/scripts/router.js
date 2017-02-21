@@ -8,21 +8,20 @@ var LoginContainer = require('./components/app.jsx').LoginContainer;
 var AppRouter = Backbone.Router.extend({
   routes: {
     '':'login',
-    'index':'index',
-    'messages':'messages'
+    // 'messages':'messages'
   },
   login: function(){
-    ReactDOM.render(
-      React.createElement(LoginContainer),
-      document.getElementById('app')
-    );
-  },
-  index: function(){
     ReactDOM.render(
       React.createElement(Container),
       document.getElementById('app')
     );
-  }
+  },
+  // messages: function(){
+  //   ReactDOM.render(
+  //     React.createElement(Container),
+  //     document.getElementById('app')
+  //   );
+  // }
 
 });
 

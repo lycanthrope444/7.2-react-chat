@@ -11,11 +11,11 @@ var Container = React.createClass({
     messageList.fetch().done(function(){
       self.setState({messageList: messageList})
     });
-    // console.log(this.props.router);
+    console.log(this.props.router);
     // self.setState({user: userName});
     // console.log(self);
     return {
-      username: null,
+      username: this.props.router.user,
       messages: messageList
     }
   },
@@ -29,6 +29,7 @@ var Container = React.createClass({
   processLogin: function(name){
     // event.preventDefault();
     console.log(name);
+    localStorage.setItem('user', name);
     this.setState({username: name});
 
     console.log('login clicked container', this.state.user);
@@ -41,7 +42,6 @@ var Container = React.createClass({
     });
     console.log(newMessage);
     this.state.messageList.create(newMessage);
-
   },
   render: function(){
     // console.log(this.props);
@@ -92,11 +92,15 @@ var LoginForm = React.createClass({
     this.state = {value: ''}
 
   },
+  updateName: function(event){
+
+    console.log(this.props.username);
+  },
   render: function (){
     // console.log('Login Form', this.props);
     return (
-      <form type="submit">
-        <h2>Logged in as {this.props.username}</h2>
+      <form className="login-section" type="submit">
+        <h2 onChange={this.updateName}>Logged in as {this.props.username}</h2>
         <div className ="form-group">
           <label htmlFor="login">Login Name</label>
           <input idAttribute="login" className="form-control"
@@ -157,7 +161,9 @@ var MessageList = React.createClass({
             <span className="user-name">{iterator.attributes.username}</span>
             <span className="timestamp">{iterator.attributes.timestamp}</span>
           </div>
-          <span className ="message">{iterator.attributes.message}</span>
+          <div className="message-box">
+            <span className ="message">{iterator.attributes.message}</span>
+          </div>
         </li>
       )
     });

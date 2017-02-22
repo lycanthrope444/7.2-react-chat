@@ -166,5 +166,5 @@ var MessageList = React.createClass({
 });
 
 module.exports ={
-  Container
+  Container: Container
 };

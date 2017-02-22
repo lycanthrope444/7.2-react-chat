@@ -1,4 +1,5 @@
 var Backbone = require('backbone');
+var Moment = require('moment');
 
 var LoginModel = Backbone.Collection.extend({
 

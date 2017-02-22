@@ -10,7 +10,7 @@ var Container = React.createClass({
     var messageList = new models.MessageCollection();
     messageList.fetch().done(function(){
       self.setState({messageList: messageList})
-    })
+    });
     // console.log(this.props.router);
     // self.setState({user: userName});
     // console.log(self);
@@ -20,9 +20,10 @@ var Container = React.createClass({
     }
   },
   componentWillMount: function(){
-    // window.setInterval(5000, this.fetchMessages);
+    var interval = window.setInterval(this.fetchMessages, 5000);
   },
   fetchMessages: function(){
+    this.state.messageList.fetch();
     console.log(this.state);
   },
   processLogin: function(name){
@@ -47,6 +48,7 @@ var Container = React.createClass({
     // console.log(this.state);
     return (
       <div className="container">
+
         <LoginForm processLogin={this.processLogin} data={this.state}/>
         <MessageForm submitMessage={this.submitMessage} data={this.state}/>
         <MessageList data={this.state}/>
@@ -151,14 +153,16 @@ var MessageList = React.createClass({
     var refinedMess = messageList.map(function(iterator, index){
       return (
         <li key={index}>
-          <div>{iterator.attributes.username}</div>
-          <div>{iterator.attributes.message}</div>
-          <div>{iterator.attributes.timestamp}</div>
+          <div className="formatter">
+            <span className="user-name">{iterator.attributes.username}</span>
+            <span className="timestamp">{iterator.attributes.timestamp}</span>
+          </div>
+          <span className ="message">{iterator.attributes.message}</span>
         </li>
       )
     });
     return (
-      <ul>
+      <ul className="message-list">
         {refinedMess}
       </ul>
     )
@@ -166,5 +170,5 @@ var MessageList = React.createClass({
 });
 
 module.exports ={
-  Container: Container
+  Container
 };

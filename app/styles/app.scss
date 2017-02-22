@@ -15,3 +15,20 @@ $icon-font-path: '../../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
 img {
   max-width: 100%;
 }
+
+.message-list{
+  list-style: none;
+}
+
+
+.formatter{
+  width: 25%;
+  display: inline-block;
+}
+
+.user-name{
+  display: inline-block;
+  width: 50%;
+  overflow: scroll;
+  margin-right: 5px;
+}

@@ -15,7 +15,7 @@ var Container = React.createClass({
     // self.setState({user: userName});
     // console.log(self);
     return {
-      user: null,
+      username: null,
       messages: messageList
     }
   },
@@ -28,13 +28,19 @@ var Container = React.createClass({
   processLogin: function(name){
     // event.preventDefault();
     console.log(name);
-    this.setState({user: name});
+    this.setState({username: name});
 
     console.log('login clicked container', this.state.user);
   },
-  submitMessage: function(event){
-    event.preventDefault();
-    console.log('container clicked', event.target.value);
+  submitMessage: function(message){
+    var newMessage = new models.MessageModel({
+      username: this.state.username,
+      message: message,
+      timestamp: new Date()
+    });
+    console.log(newMessage);
+    this.state.messageList.create(newMessage);
+
   },
   render: function(){
     // console.log(this.props);
@@ -42,7 +48,7 @@ var Container = React.createClass({
     return (
       <div className="container">
         <LoginForm processLogin={this.processLogin} data={this.state}/>
-        <MessageForm data={this.state}/>
+        <MessageForm submitMessage={this.submitMessage} data={this.state}/>
         <MessageList data={this.state}/>
       </div>
     )
@@ -88,7 +94,7 @@ var LoginForm = React.createClass({
     // console.log('Login Form', this.props);
     return (
       <form type="submit">
-        <h2>Logged in as {this.props.user}</h2>
+        <h2>Logged in as {this.props.username}</h2>
         <div className ="form-group">
           <label htmlFor="login">Login Name</label>
           <input idAttribute="login" className="form-control"
@@ -106,20 +112,27 @@ var MessageForm = React.createClass({
       {newMessage: ''}
     )
   },
+  handleMessage: function(event){
+    this.setState({newMessage :event.target.value});
+  },
   submitMessage: function(event){
     event.preventDefault();
-    this.setState({newMessage: event.target.value});
-    console.log('message button click', this.state);
+    console.log(this);
+    this.props.submitMessage(this.state.newMessage);
+    this.setState({newMessage: ''});
+    // this.setState({newMessage: event.target.value});
+    // console.log('message button click', this.state);
   },
   render: function(){
     // console.log('mess Form', this.props);
+    // console.log(this);
     return (
       <form>
         <div className ="form-group">
           <label htmlFor="message">Write your message</label>
           <input idAttribute ="message" className="form-control"
-            newMessage={this.state.newMessage} onChange={this.submitMessage} placeholder="New Message" />
-          <button className="message btn" onClick={this.props.submitMessage}> Submit </button>
+            newMessage={this.state.newMessage} onChange={this.handleMessage} placeholder="New Message" />
+          <button className="message btn" onClick={this.submitMessage}> Submit </button>
         </div>
       </form>
     )

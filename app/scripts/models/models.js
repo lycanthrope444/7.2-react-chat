@@ -8,9 +8,11 @@ var MessageModel = Backbone.Model.extend({
   id: '_id',
   defaults: {
     username: 'somebody',
-    message: 'stuff here',
-    timestamp: 'the time'
-  }
+    message: 'stuff here'
+  },
+  initialize: function(){
+   this.isNew() ? this.set('timestamp', Moment().format('LTS')) : this.set('timestamp', this.get('timestamp'));
+ }
 });
 
 var MessageCollection = Backbone.Collection.extend({

@@ -61,7 +61,7 @@ var LoginForm = React.createClass({
   //
   // },
   render: function (){
-    console.log('Login Form', this.props);
+    // console.log('Login Form', this.props);
     return (
       <form>
         <div className ="form-group">
@@ -94,13 +94,27 @@ var MessageForm = React.createClass({
 });
 
 var MessageList = React.createClass({
-
+  // filterList: function(){
+  //
+  //   console.log(refinedMess);
+  // },
   render: function(){
-    console.log('messListComp', this.props);
+    // console.log(this.filterList);
+    var messageList = this.props.data.messages.models;
+    // console.log(messageList);
+    var refinedMess = messageList.map(function(iterator, index){
+      return (
+        <li key={index}>
+          <div>{iterator.attributes.username}</div>
+          <div>{iterator.attributes.message}</div>
+          <div>{iterator.attributes.timestamp}</div>
+        </li>
+      )
+    });
     return (
-      <div>
-        Message List
-      </div>
+      <ul>
+        {refinedMess}
+      </ul>
     )
   }
 });

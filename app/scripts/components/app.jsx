@@ -11,6 +11,7 @@ var Container = React.createClass({
     messageList.fetch().done(function(){
       self.setState({messageList: messageList})
     })
+    // console.log(this.props.router);
     // self.setState({user: userName});
     // console.log(self);
     return {
@@ -18,11 +19,22 @@ var Container = React.createClass({
       messages: messageList
     }
   },
-  processLogin: function(event){
-    event.preventDefault();
-    this.setState({user: event.target.value});
+  componentWillMount: function(){
+    // window.setInterval(5000, this.fetchMessages);
+  },
+  fetchMessages: function(){
+    console.log(this.state);
+  },
+  processLogin: function(name){
+    // event.preventDefault();
+    console.log(name);
+    this.setState({user: name});
 
-    console.log('login clicked', this.state);
+    console.log('login clicked container', this.state.user);
+  },
+  submitMessage: function(event){
+    event.preventDefault();
+    console.log('container clicked', event.target.value);
   },
   render: function(){
     // console.log(this.props);
@@ -55,19 +67,33 @@ var Container = React.createClass({
 // });
 
 var LoginForm = React.createClass({
-  // processLogin: function(event){
-  //   event.preventDefault();
-  //   console.log('login clicked');
-  //
-  // },
+  getInitialState: function(){
+    return (
+      {value: ''}
+    )
+  },
+  handleLogin: function(event){
+    this.setState({value: event.target.value});
+  },
+  processLogin: function(event){
+    event.preventDefault();
+
+    // console.log('login clicked', this.state);
+    this.props.processLogin(this.state.value);
+    //set local storage for user here as well
+    this.state = {value: ''}
+
+  },
   render: function (){
     // console.log('Login Form', this.props);
     return (
-      <form>
+      <form type="submit">
+        <h2>Logged in as {this.props.user}</h2>
         <div className ="form-group">
           <label htmlFor="login">Login Name</label>
-          <input idAttribute="login" className="form-control" placeholder="Login" />
-          <button className="login btn" onClick= {this.props.processLogin} >Login</button>
+          <input idAttribute="login" className="form-control"
+            placeholder="Login" value={this.state.value} onChange={this.handleLogin} />
+          <button className="login btn" onClick= {this.processLogin} >Login</button>
         </div>
       </form>
     );
@@ -75,18 +101,25 @@ var LoginForm = React.createClass({
 });
 
 var MessageForm = React.createClass({
+  getInitialState: function(){
+    return (
+      {newMessage: ''}
+    )
+  },
   submitMessage: function(event){
     event.preventDefault();
-    console.log('message button click');
+    this.setState({newMessage: event.target.value});
+    console.log('message button click', this.state);
   },
   render: function(){
-    console.log('mess Form', this.props);
+    // console.log('mess Form', this.props);
     return (
       <form>
         <div className ="form-group">
           <label htmlFor="message">Write your message</label>
-          <input idAttribute ="message" className="form-control"/>
-          <button className="message btn" onClick={this.submitMessage}>Submit</button>
+          <input idAttribute ="message" className="form-control"
+            newMessage={this.state.newMessage} onChange={this.submitMessage} placeholder="New Message" />
+          <button className="message btn" onClick={this.props.submitMessage}> Submit </button>
         </div>
       </form>
     )

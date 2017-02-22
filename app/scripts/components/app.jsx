@@ -20,41 +20,41 @@ var Container = React.createClass({
   },
   render: function(){
     // console.log(this.props);
-    console.log(this.state);
+    // console.log(this.state);
     return (
       <div className="container">
-        Container
-        <LoginContainer data={this.state}/>
-        <MessageForm />
+        <LoginForm data={this.state}/>
+        <MessageForm date={this.state}/>
+        <MessageList data={this.state}/>
       </div>
     )
   }
 });
 
-var LoginContainer = React.createClass({
-  getInitialState: function(){
-    console.log(this.props);
-    // this.state = loginModel;
-    return null;
-  },
-  render: function (){
-    console.log(this.props)
-    return (
-      <div>
-        LoginContainer
-        <LoginForm user={this.props}/>
-      </div>
-    );
-  }
-});
+// var LoginContainer = React.createClass({
+//   getInitialState: function(){
+//     console.log(this.props);
+//     // this.state = loginModel;
+//     return null;
+//   },
+//   render: function (){
+//     console.log(this.props)
+//     return (
+//       <div>
+//         LoginContainer
+//         <LoginForm user={this.props}/>
+//       </div>
+//     );
+//   }
+// });
 
 var LoginForm = React.createClass({
   processLogin: function(event){
-    // event.preventDefault();
-
+    event.preventDefault();
+    console.log('login clicked');
   },
   render: function (){
-    console.log(this.props);
+    console.log('Login Form', this.props);
     return (
       <form>
         <div className ="form-group">
@@ -67,19 +67,37 @@ var LoginForm = React.createClass({
   }
 });
 
-
-
 var MessageForm = React.createClass({
-    render: function(){
-      return (
-        <div>
-
+  submitMessage: function(event){
+    event.preventDefault();
+    console.log('message button click');
+  },
+  render: function(){
+    console.log('mess Form', this.props);
+    return (
+      <form>
+        <div className ="form-group">
+          <label htmlFor="message">Write your message</label>
+          <input idAttribute ="message" className="form-control"/>
+          <button className="message btn" onClick={this.submitMessage}>Submit</button>
         </div>
-      )
-    }
+      </form>
+    )
+  }
+});
+
+var MessageList = React.createClass({
+
+  render: function(){
+    console.log('messListComp', this.props);
+    return (
+      <div>
+        Message List
+      </div>
+    )
+  }
 });
 
 module.exports ={
-  Container,
-  LoginContainer
+  Container
 };

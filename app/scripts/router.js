@@ -10,9 +10,12 @@ var AppRouter = Backbone.Router.extend({
     '':'login',
     // 'messages':'messages'
   },
+  initialize: function(){
+    this.user = localStorage.getItem('user');
+  },
   login: function(){
     ReactDOM.render(
-      React.createElement(Container),
+      React.createElement(Container, {router: this}),
       document.getElementById('app')
     );
   },

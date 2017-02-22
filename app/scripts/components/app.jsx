@@ -18,13 +18,19 @@ var Container = React.createClass({
       messages: messageList
     }
   },
+  processLogin: function(event){
+    event.preventDefault();
+    this.setState({user: event.target.value});
+
+    console.log('login clicked', this.state);
+  },
   render: function(){
     // console.log(this.props);
     // console.log(this.state);
     return (
       <div className="container">
-        <LoginForm data={this.state}/>
-        <MessageForm date={this.state}/>
+        <LoginForm processLogin={this.processLogin} data={this.state}/>
+        <MessageForm data={this.state}/>
         <MessageList data={this.state}/>
       </div>
     )
@@ -49,10 +55,11 @@ var Container = React.createClass({
 // });
 
 var LoginForm = React.createClass({
-  processLogin: function(event){
-    event.preventDefault();
-    console.log('login clicked');
-  },
+  // processLogin: function(event){
+  //   event.preventDefault();
+  //   console.log('login clicked');
+  //
+  // },
   render: function (){
     console.log('Login Form', this.props);
     return (
@@ -60,7 +67,7 @@ var LoginForm = React.createClass({
         <div className ="form-group">
           <label htmlFor="login">Login Name</label>
           <input idAttribute="login" className="form-control" placeholder="Login" />
-          <button className="login btn" onClick= {this.processLogin} >Login</button>
+          <button className="login btn" onClick= {this.props.processLogin} >Login</button>
         </div>
       </form>
     );

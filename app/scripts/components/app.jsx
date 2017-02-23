@@ -20,12 +20,12 @@ var Container = React.createClass({
     }
   },
   componentWillMount: function(){
-    var interval = window.setInterval(this.fetchMessages, 5000);
+    var interval = window.setInterval(this.displayList, 5000);
   },
-  fetchMessages: function(){
-    this.state.messageList.fetch();
-    console.log(this.state);
-  },
+  // fetchMessages: function(){
+  //
+  //   console.log(this.state);
+  // },
   processLogin: function(name){
     // event.preventDefault();
     console.log(name);
@@ -41,7 +41,25 @@ var Container = React.createClass({
       timestamp: new Date()
     });
     console.log(newMessage);
-    this.state.messageList.create(newMessage);
+    this.state.messages.create(newMessage);
+  },
+  displayList: function(){
+    var mList = this.state.messages.models;
+    // console.log(messageList);
+    var refinedMess = mList.map(function(iterator, index){
+      return (
+        <li key={index}>
+          <div className="formatter">
+            <span className="user-name">{iterator.attributes.username}</span>
+            <span className="timestamp">{iterator.attributes.timestamp}</span>
+          </div>
+          <div className="message-box">
+            <span className ="message">{iterator.attributes.message}</span>
+          </div>
+        </li>
+      )
+    });
+    this.state.messageList = refinedMess;
   },
   render: function(){
     // console.log(this.props);
@@ -51,7 +69,7 @@ var Container = React.createClass({
 
         <LoginForm processLogin={this.processLogin} data={this.state}/>
         <MessageForm submitMessage={this.submitMessage} data={this.state}/>
-        <MessageList data={this.state}/>
+        <MessageList displayList={this.displayList} data={this.state}/>
       </div>
     )
   }
@@ -146,30 +164,20 @@ var MessageForm = React.createClass({
 });
 
 var MessageList = React.createClass({
-  // filterList: function(){
-  //
-  //   console.log(refinedMess);
-  // },
+  getInitialState: function(){
+    return({messageList: []})
+  },
+  displayList: function(){
+    console.log(this.props);
+    this.props.displayList();
+    this.state.messageList = this.props.data.messageList;
+  },
   render: function(){
     // console.log(this.filterList);
-    var messageList = this.props.data.messages.models;
-    // console.log(messageList);
-    var refinedMess = messageList.map(function(iterator, index){
-      return (
-        <li key={index}>
-          <div className="formatter">
-            <span className="user-name">{iterator.attributes.username}</span>
-            <span className="timestamp">{iterator.attributes.timestamp}</span>
-          </div>
-          <div className="message-box">
-            <span className ="message">{iterator.attributes.message}</span>
-          </div>
-        </li>
-      )
-    });
+    this.displayList();
     return (
       <ul className="message-list">
-        {refinedMess}
+        {this.state.messageList}
       </ul>
     )
   }
